@@ -1,0 +1,12 @@
+node_modules
+.next
+.git
+.env
+.env.*
+supabase
+tests
+docs
+scripts
+*.log
+Dockerfile
+docker-compose.yml

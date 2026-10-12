@@ -1,0 +1,173 @@
+@import 'tailwindcss';
+
+/* Flour, ink and crust: a production ledger, not a SaaS dashboard. */
+@theme {
+  --color-flour: #f4eee2;
+  --color-paper: #fbf8f2;
+  --color-ink: #241c14;
+  --color-ink-soft: #6e5f4f;
+  --color-rule: #dfd3bf;
+  --color-crust: #b0501a;
+  --color-crust-dark: #8a3c10;
+  --color-alert: #a8261b;
+  --color-alert-soft: #f8e3dd;
+  --color-ok: #3d6a37;
+
+  /* One color per stage of a lot's life. */
+  --color-stage-raw: #e6d3a8;
+  --color-stage-packaging: #cfd8c6;
+  --color-stage-wip: #f1e3c3;
+  --color-stage-finished: #d79a5c;
+  --color-stage-packed: #b8997a;
+
+  --font-display: var(--font-young-serif), Georgia, serif;
+  --font-sans: var(--font-atkinson), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+}
+
+@layer base {
+  html {
+    background: var(--color-flour);
+    color: var(--color-ink);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    /* A faint paper grain. */
+    background-image: radial-gradient(rgb(36 28 20 / 0.035) 1px, transparent 1px);
+    background-size: 5px 5px;
+    min-height: 100dvh;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-crust);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* Lot code printed on a hanging tag: notched end and a punched hole. */
+  .lot-tag {
+    --tag-bg: var(--color-stage-raw);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.2rem 0.7rem 0.2rem 1.35rem;
+    background: var(--tag-bg);
+    font-family: var(--font-mono);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    clip-path: polygon(0.55rem 0, 100% 0, 100% 100%, 0.55rem 100%, 0 50%);
+  }
+
+  .lot-tag::before {
+    content: '';
+    position: absolute;
+    left: 0.6rem;
+    top: 50%;
+    width: 0.32rem;
+    height: 0.32rem;
+    margin-top: -0.16rem;
+    border-radius: 999px;
+    background: var(--color-flour);
+    box-shadow: inset 0 0 0 1px rgb(36 28 20 / 0.25);
+  }
+
+  .lot-tag[data-stage='raw_material'] { --tag-bg: var(--color-stage-raw); }
+  .lot-tag[data-stage='packaging'] { --tag-bg: var(--color-stage-packaging); }
+  .lot-tag[data-stage='wip'] { --tag-bg: var(--color-stage-wip); }
+  .lot-tag[data-stage='finished'] { --tag-bg: var(--color-stage-finished); }
+  .lot-tag[data-stage='packed'] { --tag-bg: var(--color-stage-packed); }
+
+  .field-label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+  }
+
+  /* Big targets: the forms are filled in on a tablet in the kitchen. */
+  .field {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.55rem 0.8rem;
+    border: 1.5px solid var(--color-rule);
+    border-radius: 0.35rem;
+    background: var(--color-paper);
+    font-size: 1.05rem;
+  }
+
+  .field:focus {
+    border-color: var(--color-ink);
+    outline: none;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0 1.25rem;
+    border-radius: 0.35rem;
+    font-weight: 700;
+    transition: background-color 120ms, transform 120ms;
+  }
+
+  .btn:active {
+    transform: translateY(1px);
+  }
+
+  .btn-primary {
+    background: var(--color-crust);
+    color: var(--color-paper);
+  }
+
+  .btn-primary:hover {
+    background: var(--color-crust-dark);
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.6;
+    cursor: progress;
+  }
+
+  .btn-ghost {
+    border: 1.5px solid var(--color-rule);
+    background: transparent;
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--color-ink);
+  }
+
+  .eyebrow {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+  }
+
+  .rise {
+    animation: rise 420ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise {
+    animation: none;
+  }
+}
