@@ -1,0 +1,15 @@
+# The web app in Docker, against the local Supabase started with `npm run db:start`.
+#   npm run docker:up   ->  http://localhost:3001
+services:
+  web:
+    build: .
+    image: bakery-web
+    ports:
+      - "3001:3000"
+    environment:
+      # From inside the container, the host's Supabase is at host.docker.internal.
+      SUPABASE_URL: http://host.docker.internal:54321
+      SUPABASE_PUBLISHABLE_KEY: ${SUPABASE_PUBLISHABLE_KEY:?set SUPABASE_PUBLISHABLE_KEY in .env.local}
+      BAKERY_TIME_ZONE: ${BAKERY_TIME_ZONE:-America/New_York}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
